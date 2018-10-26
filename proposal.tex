@@ -359,34 +359,37 @@
 
 
 \begin{abstract}
-The project aims to predict the popularity of a music by analysing music features such as tempo, duration, mode, loudness, key - arist information such as artist name, location, popularity - and meta data such as release title and year. The codebase for the project will be located at \texttt{\url{https://github.com/inSam/SoundScorer221}}
+This project aims to predict the popularity of songs by analysing acoustic features such as tempo, duration, mode, loudness, key; artist information such as location and popularity; and metadata such as release title and year. The codebase for the project is located at \texttt{\url{https://github.com/inSam/SoundScorer221}}
 \end{abstract}
 
 
 
 \section{Introduction}
-The music industry is a multi-billion dollar industry in which over a million song is produced in the United States each year alone. We would like to predict the hotness or success probability of a song through its features prior to release. It will be useful for the music industry as a baseline advisor, and understand what features of songs are currently popular with the public.
+The music industry is a multi-billion dollar industry which produces over a million songs each year in the United States alone. With such a large volume of music produced, identifying which songs will become popular is a highly lucrative business. We would like to predict the popularity of a song by analyzing its audio features and metadata. Such a tool would be valuable for record labels, streaming services, and average consumers; it would also help the research community understand what acoustic features are currently popular with the public.
 
 \section{Related Work}
-Myra et al 2018 [1] performed an analysis on over 500,000 songs released in UK to correlate success (if it appeared on the top 100 hitlist) using accoustic features and the popstar status of its artist. To perform the study, they used random forest as their predictive method in which a single classification tree is used. Without the super-star feature, they were able to obtain about 70\% success rate in classification and about 80\% success rate with the super-star feature.
+Myra et al 2018 [1] analyzed over 500,000 songs to predict popularity (appearance on the Top 100 song list) from accoustic features and the "popstar status" of its artist. Using a random forest classifier, Myra et al. obtained a roughly 70\% classification accuracy without using the "popstar status" feature, and a roughly 80\% success rate with the popstar feature.
 
-In a previous CS229 project, Pham et al. attempted to predict song popularity using state vector machines, multi-layered perceptrons, and logistical regression in 2015. Pham et al. utilized auditory features such as "danceability" and "energy" derived from The Echo Nest's proprietary algorithms to extract auditory features. Their system performed moderatly well with an MSE error of about 0.15 over a popularity index between 0 and 1 [2].
+In a 2015 CS229 project, Pham et al. attempted to predict song popularity using support vector machines, multi-layered perceptrons, and logistical regression. Pham et al. utilized auditory features, such as key, tempo, and volume, as well as metadata like artist name and album name. Their metric of success was a "hotness" rating from The Echo Nest, an online aggregator of song popularity metrics. Their system performed moderately well with a Mean Squared Error of about 0.15, measured over a popularity index between 0 and 1 [2].
 
-Yang et al. attempted to predict song popularity by using convolutional neural networks (CNNs) to extract complex auditory features from songs. They find that features extracted using CNNs outperform features solely extracted using simple linear-regression techniques on each audio file. \cite{cnn_prediction}
+In a 2017 work, Yang et al. used convolutional neural networks (CNNs) to extract complex auditory features from songs and predict their resulting popularity. They found that features extracted using CNNs outperform features solely extracted using simple linear-regression techniques on audio files. \cite{cnn_prediction}
 
 \section{Methodology}
 
 \subsection{Dataset}
-Our dataset is a random subset of songs from the past ten years extracted from the Spotify API, which provides acoustic features, author information, and meta data of the songs. More abstract features such as dancebility, energy, and song popularity were pulled from the Echo Next, whose database is incororated into the Spotify API.
+Our dataset comprises songs extracted from the Spotify API, which provides acoustic features, author information, and song metadata. More abstract features such as dancebility, energy, and song popularity were pulled from the Echo Nest, whose database is incororated into the Spotify API.
 
-As preliminary data, we extracted a small subset of songs from the Million Song dataset, which contains a plethora of pre-extracted features that are also provided by the Spotify and the Echo Nest API. We furthur narrowed the dataset by only using songs that contained the following features:
+As preliminary data, we pulled 10,000 songs from the Spotify API, which contains a plethora of pre-extracted features that are also provided by the Spotify and the Echo Nest. These features include:
 \begin{itemize}
-	\item tempo, duration, mode, loudness
-	\item artist name,
-	\item song popularity
+	\item Acoustic Features: tempo, duration, loudness
+	\item Metadata: artist name and information
+  \item Audio: song preview
+  \item Echo Nest Features: "danceability", "energy", etc.
 \end{itemize}
 
-\par The features noted above will be the features we use to run our preliminary baseline and oracle tests on.
+\par The six Echo Nest features are derived from the audio file but use Echo Nest's proprietary algorithm.
+
+\par Each song is also labeled with a popularity score between $1$ and $100$. This popularity score will serve as our ground truth label, and we will use the features above to run our preliminary baseline and oracle tests.
 
 
 \subsection{Concrete Example of Input and Output}
@@ -399,32 +402,32 @@ Here you can see an an Input and Output example for the song \textit{Never Gonna
   &tempo: 113.359 \\
   &duration: 211.69587 \\
   &mode: 1 \\
+  &energy: 48.149 \\
+  &previewurl: p.scdn.co/mp3/99 \\
+  ...
         &\},\\
     \}
 \end{align*}
-The output is simply the popularity/hotness rating, or in this case $86$, out of a popularity rating from 1 to 100.
+The output is simply the Spotify popularity rating, a score between 1 and 100 (in this case, 86). Although a song's popularity fluctuates over time, we predict only the current popularity rating.
 
 \subsection{Implementation}
-We started by importing the spotify dataset \cite{spotify_api} which allows us to quickly explore the dataset and to speed up development. We first built a framework that allowed us to extract features through the spotify\_api.
-
-As our baseline experimentation, we used Linear Regression to predict song popularity in a test set of 1,500 songs extracted from the Spotify API.
+We started by importing 10,000 songs from the public Spotify dataset and extracting features from the Spotify API.\cite{spotify_api} For our baseline experimentation, we trained a Linear Regression classifier on this Spotify data.
 
 
 \subsection{Evaluation Metric}
-One of the things we noticed right away is that is that popularity is extremely time dependent. Therefore to narrow the scope of our project, we decided that our metric and predictor only serve to estimate the current popularity.
 
-We use the L2 norm as our current evaluation matric.
+We use Mean Squared Error as our evaluation matric.
 
-$$ \sqrt{\frac{\sum_{i=1}^n(\text{Predicted}_i-\text{Actual}_i)^2}{n}} $$
+$$ \frac{\sum_{i=1}^n(\text{Predicted}_i-\text{Actual}_i)^2}{n} $$
 
 
 
 \section{Preliminary results}
 \subsection{Baseline}
-For our baseline, we trained a linear regression classifier on seven features already stored in the Spotify database: "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence"]. We pulled 10,000 songs from Spotify's database of 2017 releases, and used a 85-15 train/test split. Our linear regression classifier achieved a mean squared error of $61.1$ over a popularity ranging between 1 and 100.
+For our baseline, we trained a linear regression classifier on seven features already stored in the Spotify database: "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", and "valence". We used an 85/15 train/test split for our database of 10,000 songs, and our linear regression classifier achieved a mean squared error of $61.1$.
 
 \subsection{Oracle}
-For our oracle, we simply allowed our program to look at the correct answer and return the true value. As a result, our oracle was able to obtain an total loss of 0 using the L2 norm as our accuracy metric.
+For our oracle, we simply allowed our program to look at the correct answer and return the true value. This oracle returns no error.
 
 \section{Next Steps}
 
