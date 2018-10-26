@@ -359,7 +359,7 @@
 
 
 \begin{abstract}
-The project aims to predict the popularity of a music by analysing music features such as tempo, duration, mode, loudness, key - arist information such as artist name, location, popularity - and meta data such as release title and year. The codebase for the project will be located at \texttt{\url{https://github.com/inSam/SoundScorer221}}
+The project aims to predict the popularity of a song by analyzing musical features such as tempo, duration, mode, loudness, key; arist information such as artist name, location, popularity; and meta data such as release title and year. The codebase for the project will be located at \texttt{\url{https://github.com/inSam/SoundScorer221}}
 \end{abstract}
 
 
@@ -424,7 +424,7 @@ $$ \sqrt{\frac{\sum_{i=1}^n(\text{Predicted}_i-\text{Actual}_i)^2}{n}} $$
 For our baseline, we trained a linear regression classifier on seven features already stored in the Spotify database: "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence"]. We pulled 10,000 songs from Spotify's database of 2017 releases, and used a 85-15 train/test split. Our linear regression classifier achieved a mean squared error of $61.1$ over a popularity ranging between 1 and 100.
 
 \subsection{Oracle}
-For our oracle, we simply allowed our program to look at the correct answer and return the true value. As a result, our oracle was able to obtain an total loss of 0 using the L2 norm as our accuracy metric.
+For our oracle, we simply allowed our program to look at the correct answer and return the true value. As a result, our oracle was able to obtain an total loss of 0 using the L2 norm as our metric.
 
 \section{Next Steps}
 
@@ -432,7 +432,7 @@ For our oracle, we simply allowed our program to look at the correct answer and 
 We will extract more features from the Spotify database such as song age, location, audio sections, and signature. We will also try to construct more advanced features from historical data such as musical trends. Using Spotify's provided links to song previews, we may be able to extract more advanced features from the audio recordings of each song. This step will involve a lot more feature tuning and experimentation.
 
 \subsection{Improve Models}
-For future models, we will try to tackle this problem by using SVMs and neural networks to predict popularity. In particular, neural networks may be able to extract more meaningful features from the audio tracks of each song.
+For future models, we will try to tackle this problem by using ensemble methods such as gradient boosting regressors and random forests, support vector regressors, and neural networks to predict popularity. In particular, neural networks may be able to extract more meaningful features from the audio tracks of each song.
 
 \section{Challenges}
 One challenge is to consider the effects of time on the popularity on the song. We may be able to tackle this by simply adding the age of the song as a additional feature.
