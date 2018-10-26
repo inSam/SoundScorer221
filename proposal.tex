@@ -92,7 +92,7 @@
 % graphicx was written by David Carlisle and Sebastian Rahtz. It is
 % required if you want graphics, photos, etc. graphicx.sty is already
 % installed on most LaTeX systems. The latest version and documentation can
-% be obtained at: 
+% be obtained at:
 % http://www.ctan.org/tex-archive/macros/latex/required/graphics/
 % Another good source of documentation is "Using Imported Graphics in
 % LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
@@ -217,7 +217,7 @@
 % IEEEtran.cls handling of captions and this will result in nonIEEE style
 % figure/table captions. To prevent this problem, be sure and preload
 % caption.sty with its "caption=false" package option. This is will preserve
-% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later 
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later
 % (recommended due to many improvements over 1.2) of subfig.sty supports
 % the caption=false option directly:
 %\usepackage[caption=false,font=footnotesize]{subfig}
@@ -303,7 +303,7 @@
 % http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
 %
 % The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
-% later in the document, say, to conditionally put the References on a 
+% later in the document, say, to conditionally put the References on a
 % page by themselves.
 
 
@@ -339,12 +339,12 @@
 %
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
-\title{Predicting movie ratings}
+\title{Predicting Song Popularity}
 
 
 \author{Sam~Xu~\IEEEmembership{samx@stanford.edu},
-        Joyce~Xu~\IEEEmembership{xxx@stanford.edu},
-        and~Eric~Tang~\IEEEmembership{xxx@stanford.edu}}
+        Joyce~Xu~\IEEEmembership{jexu@stanford.edu},
+        and~Eric~Tang~\IEEEmembership{etang21@stanford.edu}}
 
 
 % The paper headers
@@ -370,17 +370,19 @@ The music industry is a multi-billion dollar industry in which over a million so
 \section{Related Work}
 Myra et al 2018 [1] performed an analysis on over 500,000 songs released in UK to correlate success (if it appeared on the top 100 hitlist) using accoustic features and the popstar status of its artist. To perform the study, they used random forest as their predictive method in which a single classification tree is used. Without the super-star feature, they were able to obtain about 70\% success rate in classification and about 80\% success rate with the super-star feature.
 
-There is also a student project that attempted to predict song popularity using state vector machines, multi-layered perceptrons, and logistical regression from CS229 during 2015. Their system performed moderatly well with an MSE error of about 0.15 over a popularity index between 0 and 1 [2].
+In a previous CS229 project, Pham et al. attempted to predict song popularity using state vector machines, multi-layered perceptrons, and logistical regression in 2015. Pham et al. utilized auditory features such as "danceability" and "energy" derived from The Echo Nest's proprietary algorithms to extract auditory features. Their system performed moderatly well with an MSE error of about 0.15 over a popularity index between 0 and 1 [2].
+
+Yang et al. attempted to predict song popularity by using convolutional neural networks (CNNs) to extract complex auditory features from songs. They find that features extracted using CNNs outperform features solely extracted using simple linear-regression techniques on each audio file. \cite{cnn_prediction}
 
 \section{Methodology}
 
 \subsection{Dataset}
 Our dataset is a random subset of songs from the past ten years extracted from the Spotify API, which provides acoustic features, author information, and meta data of the songs. More abstract features such as dancebility, energy, and song popularity were pulled from the Echo Next, whose database is incororated into the Spotify API.
 
-As preliminary data, we extracted a small subset of songs from the Million Song dataset, which contains a plethora of pre-extracted features that are also provided by the Spotify and the Echo Nest API. We furthur narrowed the dataset by only using songs that contained the following features: 
+As preliminary data, we extracted a small subset of songs from the Million Song dataset, which contains a plethora of pre-extracted features that are also provided by the Spotify and the Echo Nest API. We furthur narrowed the dataset by only using songs that contained the following features:
 \begin{itemize}
 	\item tempo, duration, mode, loudness
-	\item artist name, 
+	\item artist name,
 	\item song popularity
 \end{itemize}
 
@@ -398,19 +400,18 @@ Here you can see an an Input and Output example for the song \textit{Never Gonna
   &duration: 211.69587 \\
   &mode: 1 \\
         &\},\\
-    \}  
+    \}
 \end{align*}
 The output is simply the popularity/hotness rating, or in this case $86$, out of a popularity rating from 1 to 100.
 
 \subsection{Implementation}
 We started by importing the spotify dataset \cite{spotify_api} which allows us to quickly explore the dataset and to speed up development. We first built a framework that allowed us to extract features through the spotify\_api.
 
-As our baseline experimentation, we used Linear Regression to predict the popularity of the song.
-[JOYCE FILL OUT LATER BEFORE SUBMISSION OMG]
+As our baseline experimentation, we used Linear Regression to predict song popularity in a test set of 1,500 songs extracted from the Spotify API.
 
 
 \subsection{Evaluation Metric}
-One of the things we noticed right away is that is that popularity is extremely time dependent. Therefore to narrow the scope of our project, we decided that our metric and predictor only serve to estimate the current popularity. 
+One of the things we noticed right away is that is that popularity is extremely time dependent. Therefore to narrow the scope of our project, we decided that our metric and predictor only serve to estimate the current popularity.
 
 We use the L2 norm as our current evaluation matric.
 
@@ -420,22 +421,23 @@ $$ \sqrt{\frac{\sum_{i=1}^n(\text{Predicted}_i-\text{Actual}_i)^2}{n}} $$
 
 \section{Preliminary results}
 \subsection{Baseline}
-For our baseline, we used the features explained in our dataset section.
-[INSERT RESULT.]
+For our baseline, we trained a linear regression classifier on seven features already stored in the Spotify database: "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence"]. We pulled 10,000 songs from Spotify's database of 2017 releases, and used a 85-15 train/test split. Our linear regression classifier achieved a mean squared error of $61.1$ over a popularity ranging between 1 and 100.
 
 \subsection{Oracle}
-For our oracle, we simply allowed our program to look at the correct answer and return the true value. As a result, our oracle was able to obtain an total loss of 0 using the L2 norm as our accuracy metric. 
+For our oracle, we simply allowed our program to look at the correct answer and return the true value. As a result, our oracle was able to obtain an total loss of 0 using the L2 norm as our accuracy metric.
 
 \section{Next Steps}
 
 \subsection{Improve Features}
-We will extract more features from the spotify database such as artist popularity, age, location, audio sections, and signature. We will also try to construct more advanced features from historical data such as musical trends. This step will involve a lot more feature tuning and experimentation.
+We will extract more features from the Spotify database such as song age, location, audio sections, and signature. We will also try to construct more advanced features from historical data such as musical trends. Using Spotify's provided links to song previews, we may be able to extract more advanced features from the audio recordings of each song. This step will involve a lot more feature tuning and experimentation.
 
 \subsection{Improve Models}
-For future models, we will try to tackle this problem by using SVMs and neural networks as ways to model a regression. 
+For future models, we will try to tackle this problem by using SVMs and neural networks to predict popularity. In particular, neural networks may be able to extract more meaningful features from the audio tracks of each song.
 
 \section{Challenges}
-One challenge is to consider the effects of time on the popularity on the song. We may be ble to tackle this by simply adding the age of the song as a additional feature.  
+One challenge is to consider the effects of time on the popularity on the song. We may be able to tackle this by simply adding the age of the song as a additional feature.
+
+Another challenge is that there is plenty of noise that influences a song's popularity, beyond its mere auditory features. While we have assumed a $100\%$ success rate with our Oracle, this may be unrealistic to achieve with a classifier.
 
 
 % references section
@@ -461,6 +463,10 @@ James Pham, Edrick Kyauk, Edwin Park, \emph{Predicting Song Popularity}
 \hskip 1em plus 0.5em minus 0.4em\relax Stanford University CS 229, 2015.
 \bibitem{spotify_api}
 \texttt{\url{https://developer.spotify.com/documentation/web-api/}}
+\bibitem{cnn_prediction}
+Li-Chia Yang, Szu-Yu Chou, Jen-Yu Liu, Yi-Hsuan Yang, Yi-An Chen, \emph{REVISITING THE PROBLEM OF AUDIO-BASED HIT SONG PREDICTION USING
+CONVOLUTIONAL NEURAL NETWORKS}
+\hskip 1em plus 0.5em minus 0.4em\relax Academia Sinica, Taiwan, 2017.
 
 \end{thebibliography}
 
