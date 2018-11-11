@@ -427,7 +427,9 @@ $$ \frac{\sum_{i=1}^n(\text{Predicted}_i-\text{Actual}_i)^2}{n} $$
 For our baseline, we trained a linear regression classifier on seven features already stored in the Spotify database: "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", and "valence". We used an 85/15 train/test split for our database of 10,000 songs, and our linear regression classifier achieved a mean squared error of $61.1$.
 
 \subsection{Oracle}
-For our oracle, we simply allowed our program to look at the correct answer and return the true value. As a result, our oracle obtains a loss of 0.
+Besides using the direct data from the label, an oracle for this problem is difficult to come by. Spotify doesn't release other relevant oracle data such as number of monthly listens, making it difficult to use other features in our oracle prediction. In addition, the existing body of literature on music popularity prediction is comparatively sparse, leaving few "state of the art" models to compare our performance against.
+
+The best measure we can determine for our oracle is the previous work of Myra et al., who achieved roughly 80\% accuracy in predicting a song's Top 100 status. This is an easier problem than our regression problem, but serves as a useful target for potential success, and illustrates that the problem is feasible. By setting a threshold for our model, we may be able to compare our scores to Myra's work.
 
 \section{Next Steps}
 
