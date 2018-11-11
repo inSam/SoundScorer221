@@ -107,3 +107,6 @@ venv.bak/
 auto/
 *.aux
 selected-packages.el
+proposal.fdb_latexmk
+proposal.fls
+proposal.synctex.gz
