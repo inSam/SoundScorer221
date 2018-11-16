@@ -10,7 +10,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 
 import util
 
-DATA_PATH = "data/tracks.json"
+DATA_PATH = "data/tracks_3kalbums.json"
 
 if __name__ == "__main__":
     CLIENT_ID="810e2eec841546269c49f338f1be189a"
@@ -19,7 +19,7 @@ if __name__ == "__main__":
     cache_token = token.get_access_token()
     sp = spotipy.Spotify(cache_token)
 
-    tracks = util.tracks_from_albums(sp, 2018, 1000)
+    tracks = util.tracks_from_albums(sp, 2018, 3000)
     # Remove duplicates
     tracks.sort()
     tracks = list(s for s,_ in itertools.groupby(tracks))

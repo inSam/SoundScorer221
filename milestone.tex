@@ -415,11 +415,21 @@ As a gut check that Spotify's popularity rating is sensible, we also printed out
 These popularity scores make sense to us. All the kids listen to Cardi B. Hopefully they make sense to you.
 
 \subsection{Feature Selection}
-\subsubsection{Baseline Features}
-We begin with seven audio features extracted by The Echo Nest API, which is integrated into the Spotify API. The Echo Nest uses proprietary audio analysis algorithms to extract high-level features from audio files. The seven features we used are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. Unfortunately, The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features.
+We extract three broad categories of features for use in our regression models. The first are low-level audio features, such as song duration and time signature, extracted from Spotify's Audio Analysis feature. The second are high-level audio features such as "danceability" and "valence", extracted from audio files using The Echo Nest API. The third are metadata for each song, such as artist information.
+
+\subsubsection{Spotify Audio Analysis}
+The most low-level audio features are those provided by Spotify's Audio Analysis feature. This provides both concrete song features, such as duration and average volume, as well as estimated features like the song's key and tempo. The audio analysis also provides more high-level analysis by subdividing the song into sections (i.e. Chorus, Bridge, Verse) and further subdividing sections into segments.
+
+Spotify is somewhat slow to deliver audio analysis statistics, as making a call to audio analysis requires Spotify to parse each song. We plan to make these API calls in our future feature extractors.
+
+\subsubsection{The Echo Nest}
+We then add seven high-level audio features extracted by The Echo Nest API, which is integrated into the Spotify API. The Echo Nest uses proprietary audio analysis algorithms to extract high-level features from audio files. The seven features we used are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features, but we use them in all experiments described below.
+
+\subsubsection{Artist Metadata}
+We plan to further utilize song and artist metadata such as an artist's past releases, genre, and length of career. We may also use the powerful feature of Spotify artist popularity; however, Spotify computes this feature using the popularity of an artist's individual songs, so this may not be suitable.
+
+\subsection{Data Split}
 After extracting these features for each song in our dataset, we converted our list of songs and features into a Pandas dataframe for consumption by scikit-learn models, split our data according to a 85/15/15 train/dev/test split, and trained the models described below.
-\subsubsection{Additional Features}
-We plan to add two more categories of features: further audio features, and song/artist metadata.
 
 \subsection{Support Vector Regression}
 As our first algorithm, we chose to to leverage non-linear Support Vector Regression (SVR). SVR applies hinge loss and non-linear kernels to regression problems, performing regressions on a dataset and generating non-linear contours. We feed our baseline features and additional features into our SVR, with results reported below.
@@ -432,9 +442,9 @@ For our second classical algorithm, we will train a Random Forest Regressor on o
 Our initial evaluations involve running our models on our dataset with the basic features described above.
 
 \subsection{Linear Regression (Baseline)}
-For our baseline, we trained a simple linear regression model on our dataset. Our linear regression model achieved a mean squared error of $279.62$.
+For our baseline, we trained a simple linear regression model on our dataset. Solely using the seven features from The Echo Nest, our linear regression model achieved a mean squared error of $279.62$.
 
-Worth noting in our linear regression baseline are the learned coefficient weights, which provide a crude approximation for the importance of each factor. The factor most strongly predictive of popularity is 'danceability', with a weight of $21.10$. The factor most strongly predictive of unpopularity is 'valence', with a weight of $-9.75$.
+Worth noting in this linear regression baseline are the learned coefficient weights, which provide a crude approximation for the importance of each factor. The factor most strongly predictive of popularity is 'danceability', with a weight of $21.10$. The factor most strongly predictive of unpopularity is 'valence', with a weight of $-9.75$.
 
 \subsection{SVR}
 As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $295.72$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
