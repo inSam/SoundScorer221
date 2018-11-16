@@ -373,9 +373,9 @@ Our dataset comprises 7,473 songs extracted from the Spotify API, which provides
 
 We pulled these songs from Spotify's 1,000 top albums released in 2018, which gives us a range of songs across popularity, genre and acoustic features. In addition, limiting our analysis to songs released in 2018 partially controls for the effect of age on popularity.
 
-We further made sure to eliminate all duplicate songs from our dataset, as some songs are cross-listed on multiple albums. This should prevent our score from being artificially inflated, as it would be if some songs appeared on both our training and test set.
+We further made sure to eliminate all duplicate songs from our dataset, as some songs are cross-listed on multiple albums. This should prevent our score from being artificially inflated, as it would be if some songs appeared on both our training and test set. We use an 85/15 train/test split throughout the paper.
 
-\textbf{Note to the reader}: Our original sampling of songs, described in the project proposal, turned out to be highly imbalanced, skewing heavily towards popular songs over unpopular songs. To remedy this, we changed our data sample from the top 10,000 songs to all songs from the top 1,000 albums. This results in a much more balanced dataset. We've re-run our original baseline tests on our new dataset, and we report these figures throughout the paper.
+\textbf{Note to the reader}: Our original sampling of songs, described in the project proposal, turned out to be highly imbalanced, skewing heavily towards popular songs over unpopular songs. To remedy this, we changed our data sample from the top 10,000 songs to all songs from the top 1,000 albums. This results in a much more balanced dataset. We've re-run our original baseline tests on our new dataset, and we report these figures throughout the paper. Since our data is more evenly spread from 0 to 100, this results in a higher MSE than on our previous dataset.
 
 \subsection{Data Exploration}
 
@@ -399,14 +399,27 @@ These popularity scores make sense to us. All the kids listen to Cardi B. Hopefu
 \subsection{Feature Selection}
 \subsubsection{Baseline Features}
 We begin with seven audio features extracted by The Echo Nest API, which is integrated into the Spotify API. The Echo Nest uses proprietary audio analysis algorithms to extract high-level features from audio files. The seven features we used are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. Unfortunately, The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features.
+After extracting these features for each song in our dataset, we converted our list of songs and features into a Pandas dataframe for consumption by scikit-learn models, split our data by a 85/15 train/test split, and trained the models described below.
 \subsubsection{Additional Features}
 We plan to add two more categories of features: further audio features, and song/artist metadata.
 
-\subsection{State Vector Regression}
+\subsection{Support Vector Regression}
 As our first algorithm, we chose to to leverage non-linear Support Vector Regression (SVR). SVR applies hinge loss and non-linear kernels to regression problems, performing regressions on a dataset and generating non-linear contours. We feed our baseline features and additional features into our SVR, with results reported below.
 
 \subsection{Random Forest}
 For our second classical algorithm, we will train a Random Forest Regressor on our features. Random Forest Regressors are extremely similar to Random Forest Classifiers, also using a forest of decision trees. In our case, the Random Forest classifier should give us a reasonably strong and interpretable model for use on our features.
+
+\section{Initial Evaluation}
+
+Our initial evaluations involve running our models on our dataset with the basic features described above.
+
+\subsection{Baseline: Linear Regression}
+For our baseline, we trained a simple linear regression classifier on our dataset. Our linear regression classifier achieved a mean squared error of $292.85$.
+
+\subsection{SVR}
+As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $302.63$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
+
+
 
 \section{Next Steps}
 
