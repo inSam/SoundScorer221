@@ -413,15 +413,20 @@ For our second classical algorithm, we will train a Random Forest Regressor on o
 
 Our initial evaluations involve running our models on our dataset with the basic features described above.
 
-\subsection{Baseline: Linear Regression}
+\subsection{Linear Regression (Baseline)}
 For our baseline, we trained a simple linear regression classifier on our dataset. Our linear regression classifier achieved a mean squared error of $292.85$.
 
 \subsection{SVR}
 As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $302.63$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
 
+\subsection{Random Forest Regression}
+We then trained a Random Forest Regression model on our dataset, using a forest with 100 trees and leaving all other hyperparameters as scikit-learn defaults. This resulted in a mean squared error of $275.70$. 
 
 
 \section{Next Steps}
+
+\subsection{Data Processing}
+We would like to extract more songs from the Spotify database to bolster our dataset. This should be straightforward to do, by increasing the number of albums we draw songs from, though calls to the API our rather slow. Garnering a larger dataset should also allow us to properly split our dataset into train, dev and test sets.
 
 \subsection{Improve Features}
 We will extract more features from the Spotify database such as song age, location, audio sections, and signature. We will also try to construct more advanced features from historical data such as musical trends. Using Spotify's provided links to song previews, we may be able to extract more advanced features from the audio recordings of each song. This step will involve a lot more feature tuning and experimentation.
