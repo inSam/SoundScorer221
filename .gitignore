@@ -110,3 +110,6 @@ selected-packages.el
 proposal.fdb_latexmk
 proposal.fls
 proposal.synctex.gz
+
+#DS_STORE
+.DS_Store

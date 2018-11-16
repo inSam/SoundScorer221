@@ -365,19 +365,22 @@ This project aims to predict the popularity of songs by analysing acoustic featu
 
 
 \section{Introduction}
-The goal of this project is to predict the popularity of a song by analyzing its audio features and metadata. Such a tool would be valuable for record labels, streaming services, and average consumers; it would also help the research community understand what acoustic features are currently popular with the public. In this progress report, we would like to expand on (1) our overall strategy for dataset and feature extraction (2) details about our regression algorithms (3) next steps we plan to take to finish up our project. 
+The goal of this project is to predict the popularity of a song by analyzing its audio features and metadata. Such a tool would be valuable for record labels, streaming services, and average consumers; it would also help the research community understand what acoustic features are currently popular with the public. In this progress report, we would like to expand on (1) our overall strategy for dataset and feature extraction (2) details about our regression algorithms (3) next steps we plan to take to finish up our project.
 
 \section{Methods}
 \subsection{Dataset}
-Our dataset comprises songs extracted from the Spotify API, which provides acoustic features, author information, and song metadata. More abstract features such as dancebility, energy, and song popularity were pulled from the Echo Nest, whose database is incororated into the Spotify API.
+Our dataset comprises songs extracted from the Spotify API, which provides acoustic features, author information, and song metadata. More abstract features were pulled from The Echo Nest's API, which is incororated into the Spotify API.
 \subsection{Feature Selection}
 \subsubsection{Baseline Features}
-stuff
+We begin with seven audio features extracted by The Echo Nest. These seven features are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. Unfortunately, The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features.
 \subsubsection{Additional Features}
-more stuff
+We plan to add two more categories of features: further audio features, and song/artist metadata.
 
-\subsection{State Vector Machine}
-As our first algorithm, we chose to to leverage non-linear support vector regressors (SVR). 
+\subsection{State Vector Regression}
+As our first algorithm, we chose to to leverage non-linear Support Vector Regression (SVR). SVR applies hinge loss and non-linear kernels to regression problems, performing regressions on a dataset and generating non-linear contours. We feed our baseline features and additional features into our SVR, with results reported below.
+
+\subsection{Random Forest}
+For our second classical algorithm, we will train a Random Forest Regressor on our features. Random Forest Regressors are extremely similar to Random Forest Classifiers, also using a forest of decision trees. In our case, the Random Forest classifier should give us a reasonably strong and interpretable model for use on our features.
 
 \section{Next Steps}
 
