@@ -3,6 +3,7 @@ Takes in tracks from util.py, writes them to json file for future use
 """
 
 import json
+import itertools
 
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
@@ -19,5 +20,9 @@ if __name__ == "__main__":
     sp = spotipy.Spotify(cache_token)
 
     tracks = util.tracks_from_albums(sp, 2018, 1000)
+    # Remove duplicates
+    tracks.sort()
+    tracks = list(s for s,_ in itertools.groupby(tracks))
+    #Write to file
     with open(DATA_PATH,'w') as ff:
         json.dump(tracks, ff )
