@@ -373,6 +373,8 @@ Our dataset comprises 7,473 songs extracted from the Spotify API, which provides
 
 We pulled these songs from Spotify's 1,000 top albums released in 2018, which gives us a range of songs across popularity, genre and acoustic features. In addition, limiting our analysis to songs released in 2018 partially controls for the effect of age on popularity.
 
+We further made sure to eliminate all duplicate songs from our dataset, as some songs are cross-listed on multiple albums. This should prevent our score from being artificially inflated, as it would be if some songs appeared on both our training and test set.
+
 \textbf{Note to the reader}: Our original sampling of songs, described in the project proposal, turned out to be highly imbalanced, skewing heavily towards popular songs over unpopular songs. To remedy this, we changed our data sample from the top 10,000 songs to all songs from the top 1,000 albums. This results in a much more balanced dataset. We've re-run our original baseline tests on our new dataset, and we report these figures throughout the paper.
 
 \subsection{Data Exploration}
@@ -382,6 +384,17 @@ Below, we plot the distribution of song popularity in our dataset.
 \includegraphics[width=8cm]{popularity_distribution}
 
 Our dataset appears approximately normally distributed around mean 50. Also of note, there is a significant spike of highly unpopular songs with score 0. These unpopular songs likely comprise a "long tail" of music on Spotify which users rarely listen to.
+
+As a gut check that Spotify's popularity rating is sensible, we also printed out the most popular songs in our dataset. The five most popular songs in our dataset are:
+\begin{itemize}
+  \item 'Promises (with Sam Smith)', 95
+  \item 'SICKO MODE', 96
+  \item 'Without Me', 96
+  \item 'Happier', 98
+  \item 'Taki Taki (with Selena Gomez, Ozuna & Cardi B)', 100
+\end{itemize}
+
+These popularity scores make sense to us. All the kids listen to Cardi B. Hopefully they make sense to you.
 
 \subsection{Feature Selection}
 \subsubsection{Baseline Features}
