@@ -369,10 +369,15 @@ The goal of this project is to predict the popularity of a song by analyzing its
 
 \section{Methods}
 \subsection{Dataset}
-Our dataset comprises songs extracted from the Spotify API, which provides acoustic features, author information, and song metadata. More abstract features were pulled from The Echo Nest's API, which is incororated into the Spotify API.
+Our dataset comprises 7,473 songs extracted from the Spotify API, which provides acoustic features, author information, and song metadata. We pulled all songs from Spotify's 1,000 top albums released in 2018, which gives us a range of songs across popularity, genre and acoustic features. In addition, limiting our analysis to songs released in 2018 partially controls for the effect of age on popularity.
+
+\textbf{Note to the reader}: Our original sampling of songs, described in the project proposal, turned out to be highly imbalanced, skewing heavily towards popular songs over unpopular songs. To remedy this, we changed our data sample from the top 10,000 songs to all songs from the top 1,000 albums. This results in a much more balanced dataset. We've re-run our original baseline tests on our new dataset, and we report these figures throughout the paper.
+
+\subsection{Data Exploration}
+
 \subsection{Feature Selection}
 \subsubsection{Baseline Features}
-We begin with seven audio features extracted by The Echo Nest. These seven features are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. Unfortunately, The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features.
+We begin with seven audio features extracted by The Echo Nest API, which is integrated into the Spotify API. The Echo Nest uses proprietary audio analysis algorithms to extract high-level features from audio files. The seven features we used are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. Unfortunately, The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features.
 \subsubsection{Additional Features}
 We plan to add two more categories of features: further audio features, and song/artist metadata.
 
