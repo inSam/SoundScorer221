@@ -373,13 +373,31 @@ Our dataset comprises 7,473 songs extracted from the Spotify API, which provides
 
 We pulled these songs from Spotify's 1,000 top albums released in 2018, which gives us a range of songs across popularity, genre and acoustic features. In addition, limiting our analysis to songs released in 2018 partially controls for the effect of age on popularity.
 
-We further made sure to eliminate all duplicate songs from our dataset, as some songs are cross-listed on multiple albums. This should prevent our score from being artificially inflated, as it would be if some songs appeared on both our training and test set. We use an 85/15 train/test split throughout the paper.
+We further made sure to eliminate all duplicate songs from our dataset, as some songs are cross-listed on multiple albums. This should prevent our score from being artificially inflated, as it would be if some songs appeared on both our training and test set. We use an 85/15/15 train/dev/test split throughout the paper. In this progress milestone, as we are prototyping models without tuning hyperparameters, we report evaluation metrics on our development set.
 
 \textbf{Note to the reader}: Our original sampling of songs, described in the project proposal, turned out to be highly imbalanced, skewing heavily towards popular songs over unpopular songs. To remedy this, we changed our data sample from the top 10,000 songs to all songs from the top 1,000 albums. This results in a much more balanced dataset. We've re-run our original baseline tests on our new dataset, and we report these figures throughout the paper. Since our data is more evenly spread from 0 to 100, this results in a higher MSE than on our previous dataset.
 
+\subsection{Concrete Example}
+For each song in our dataset, we model its features as extracted from the Spotify and Echo Nest APIs. Here's a sample representation for the song \textit{Never Gonna Give You Up}:
+\begin{align*}
+    "TRAXLZU12903D05F94 "&: \{ \\
+  &"features": \{\\
+  &artist\_name: Rick Astley \\
+  &loudness: -7.75 \\
+  &tempo: 113.359 \\
+  &duration: 211.69587 \\
+  &mode: 1 \\
+  &energy: 48.149 \\
+  &previewurl: p.scdn.co/mp3/99 \\
+  ...
+        &\},\\
+    \}
+\end{align*}
+We format songs' feature dictionaries as Pandas dataframes for consumption, then input the song dataframes into the models described below. Our desired output is simply the Spotify popularity rating. Although a song's popularity fluctuates over time, we predict only the current popularity rating.
+
 \subsection{Data Exploration}
 
-Below, we plot the distribution of song popularity in our dataset.
+Below, we've plotted the distribution of song popularity in our dataset.
 
 \includegraphics[width=8cm]{popularity_distribution}
 
@@ -399,7 +417,7 @@ These popularity scores make sense to us. All the kids listen to Cardi B. Hopefu
 \subsection{Feature Selection}
 \subsubsection{Baseline Features}
 We begin with seven audio features extracted by The Echo Nest API, which is integrated into the Spotify API. The Echo Nest uses proprietary audio analysis algorithms to extract high-level features from audio files. The seven features we used are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. Unfortunately, The Echo Nest's algorithms are propietary, and we are unable to access how they extracted these features.
-After extracting these features for each song in our dataset, we converted our list of songs and features into a Pandas dataframe for consumption by scikit-learn models, split our data by a 85/15 train/test split, and trained the models described below.
+After extracting these features for each song in our dataset, we converted our list of songs and features into a Pandas dataframe for consumption by scikit-learn models, split our data according to a 85/15/15 train/dev/test split, and trained the models described below.
 \subsubsection{Additional Features}
 We plan to add two more categories of features: further audio features, and song/artist metadata.
 
@@ -414,27 +432,29 @@ For our second classical algorithm, we will train a Random Forest Regressor on o
 Our initial evaluations involve running our models on our dataset with the basic features described above.
 
 \subsection{Linear Regression (Baseline)}
-For our baseline, we trained a simple linear regression classifier on our dataset. Our linear regression classifier achieved a mean squared error of $292.85$.
+For our baseline, we trained a simple linear regression model on our dataset. Our linear regression model achieved a mean squared error of $279.62$.
 
-Worth noting in our linear regression classifier are the coefficient weights, which provide a crude approximation for the importance of each factor. The factor most strongly predictive of popularity is 'danceability', with a weight of $20.70$. The factor most strongly predictive of unpopularity is 'valence', with a weight of $-9.24$.
+Worth noting in our linear regression baseline are the learned coefficient weights, which provide a crude approximation for the importance of each factor. The factor most strongly predictive of popularity is 'danceability', with a weight of $21.10$. The factor most strongly predictive of unpopularity is 'valence', with a weight of $-9.75$.
 
 \subsection{SVR}
-As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $302.63$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
+As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $295.72$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
 
 \subsection{Random Forest Regression}
-We then trained a Random Forest Regression model on our dataset, using a forest with 100 trees and leaving all other hyperparameters as scikit-learn defaults. This resulted in a mean squared error of $275.70$.
+We then trained a Random Forest Regression model on our dataset, using a forest with 100 trees and leaving all other hyperparameters as scikit-learn defaults. This resulted in a mean squared error of $250.41$, somewhat better than either the SVR or linear regression models.
 
 
 \section{Next Steps}
 
 \subsection{Data Processing}
-We would like to extract more songs from the Spotify database to bolster our dataset. This should be straightforward to do, by increasing the number of albums we draw songs from, though calls to the API our rather slow. Garnering a larger dataset should also allow us to properly split our dataset into train, dev and test sets.
+We would like to extract more songs from the Spotify database to bolster our dataset. This should be straightforward to do, by increasing the number of albums we draw songs from, though calls to the API our rather slow. Garnering a larger dataset should also allow us to properly split our dataset into train, dev and test sets, which will allow us to tune the hyperparameters for our models.
 
 \subsection{Improve Features}
 We will extract more features from the Spotify database such as song age, location, audio sections, and signature. We will also try to construct more advanced features from historical data such as musical trends. Using Spotify's provided links to song previews, we may be able to extract more advanced features from the audio recordings of each song. This step will involve a lot more feature tuning and experimentation.
 
 \subsection{Improve Models}
-For future models, we will try to tackle this problem by using ensemble methods such as gradient boosting regressors and random forests, support vector regressors, and neural networks to predict popularity. In particular, neural networks may be able to extract more meaningful features from the audio tracks of each song.
+For our existing models, we will tune hyperparameters via grid search on a development set to improve performance.
+
+For future models, we will try to tackle this problem by using ensemble methods such as gradient boosting regressors and random forests, support vector regressors, and neural networks to predict popularity. Expanding on the random forest model, gradient boosted decision trees may prove useful. In particular, neural networks may be able to extract more meaningful features from the audio tracks of each song.
 
 \section{Challenges}
 One challenge is to consider the effects of time on the popularity on the song. We may be able to tackle this by simply adding the age of the song as a additional feature.
