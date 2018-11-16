@@ -416,11 +416,13 @@ Our initial evaluations involve running our models on our dataset with the basic
 \subsection{Linear Regression (Baseline)}
 For our baseline, we trained a simple linear regression classifier on our dataset. Our linear regression classifier achieved a mean squared error of $292.85$.
 
+Worth noting in our linear regression classifier are the coefficient weights, which provide a crude approximation for the importance of each factor. The factor most strongly predictive of popularity is 'danceability', with a weight of $20.70$. The factor most strongly predictive of unpopularity is 'valence', with a weight of $-9.24$.
+
 \subsection{SVR}
 As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $302.63$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
 
 \subsection{Random Forest Regression}
-We then trained a Random Forest Regression model on our dataset, using a forest with 100 trees and leaving all other hyperparameters as scikit-learn defaults. This resulted in a mean squared error of $275.70$. 
+We then trained a Random Forest Regression model on our dataset, using a forest with 100 trees and leaving all other hyperparameters as scikit-learn defaults. This resulted in a mean squared error of $275.70$.
 
 
 \section{Next Steps}
