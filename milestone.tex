@@ -359,7 +359,7 @@
 
 
 \begin{abstract}
-This project aims to predict the popularity of songs by analysing acoustic features such as tempo, duration, mode, loudness, key; artist information such as location and popularity; and metadata such as release title and year. The codebase for the project is located at \texttt{\url{https://github.com/inSam/SoundScorer221}}
+This project aims to predict the popularity of songs by analysing acoustic features such as tempo, duration, mode, loudness, key; artist information such as location and popularity; and metadata such as release title and year. We extract audio features via EchoNest and the Spotify API, and train a variety of models including linear regression, support vector regression, random forest, and gradient boosting machine to predict the success and popularity of the song. We find that ensemble methods such as random forests and gradient boosting machines perform the best on the high-level audio features of songs.
 \end{abstract}
 
 
@@ -412,7 +412,7 @@ As a gut check that Spotify's popularity rating is sensible, we also printed out
   \item 'Taki Taki (with Selena Gomez, Ozuna & Cardi B)', 100
 \end{itemize}
 
-These popularity scores make sense to us. All the kids listen to Cardi B. Hopefully they make sense to you.
+As we can see, the most popular songs based on Spotify's rating indeed correlate to the most streamed new releases by famous artists, so our labels appear to be in order.
 
 \subsection{Feature Selection}
 We extract three broad categories of features for use in our regression models. The first are low-level audio features, such as song duration and time signature, extracted from Spotify's Audio Analysis feature. The second are high-level audio features such as "danceability" and "valence", extracted from audio files using The Echo Nest API. The third are metadata for each song, such as artist information.
@@ -438,43 +438,87 @@ As our first algorithm, we chose to to leverage non-linear Support Vector Regres
 \subsection{Random Forest}
 For our second classical algorithm, we will train a Random Forest Regressor on our features. Random Forest Regressors are extremely similar to Random Forest Classifiers, also using a forest of decision trees. In our case, the Random Forest classifier should give us a reasonably strong and interpretable model for use on our features.
 
-\section{Initial Evaluation}
+\section{Initial Results}
 
-Our initial evaluations involve running our models on our dataset with the basic features described above.
+For our initial evaluations, we ran the following models on our dataset with the basic features described above. We report our models and results below. 
 
 \subsection{Linear Regression (Baseline)}
-For our baseline, we trained a simple linear regression model on our dataset. Solely using the seven features from The Echo Nest, our linear regression model achieved a mean squared error of $279.62$.
+For our baseline, we trained a simple linear regression model on our dataset. Solely using the seven features from The Echo Nest, our linear regression model achieved a mean squared error of $264.54$.
 
 Worth noting in this linear regression baseline are the learned coefficient weights, which provide a crude approximation for the importance of each factor. The factor most strongly predictive of popularity is 'danceability', with a weight of $21.10$. The factor most strongly predictive of unpopularity is 'valence', with a weight of $-9.75$.
 
 \subsection{SVR}
-As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 1.0$. With these settings and our basic features, we achieve a mean squared error of $295.72$, which is slightly worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
+As described above, we then trained a Support Vector Regression model on our dataset. Our SVR used a radial basis function (rbf) kernel, with regularization parameter $C = 10$. With these settings and our basic features, we achieve a mean squared error of $282.99$, which is worse performance than our linear regression baseline. In the future, we plan to experiment with various kernels and hyperparameter configurations to optimize the SVR model.
 
 \subsection{Random Forest Regression}
-We then trained a Random Forest Regression model on our dataset, using a forest with 100 trees and leaving all other hyperparameters as scikit-learn defaults. This resulted in a mean squared error of $250.41$, somewhat better than either the SVR or linear regression models.
+Whereas our first two models did not perform particularly well on our dataset, our next two models - random forest and gradient boosting trees - perform significantly better.
+
+Random forests are a class of ensemble algorithms that output the mean result from its many decision trees, each of which a) subsamples the feature space and b) subsamples the dataset. 
+
+A decision tree takes a set of data points and continuously splits it, one feature at a time, in attempt to accurately predict the class or value of each data point at its leaf node. Decision trees are notoriously high variance, because they easily overfit to specific (possibly non-generalize) patterns in the training set. Random forests reduce this variance by constructing a multitude of trees and "bootstrapping" (or randomly sampling with replacement) from both the sample space and the feature space. Since the random forest takes the average of multiple trees that are trained on only a subset of the data and a subset of the features, it is more robust to noise in the training data.
+
+Specifically, after training a random forest of $B$ decision trees, we predict: \begin{align*}
+    \hat{f}(x) = \frac{1}{B}\sum_{b=1}^{B} f_b(x)
+\end{align*}
+
+We trained a Random Forest Regression model on our dataset, using a forest with 100 trees, and a minimum samples split of 2, meaning the nodes of the tree will continue to be expanded until all leaves of the tree are pure, or contain less than 2 samples. This resulted in a mean squared error of $248.95$, which is a significant improvement over both linear regression and support vector machines. 
 
 \subsection{Gradient Boosting Decision Trees}
-We also trained a Gradient Boosting decision tree model, packaged in scikit-learn's GradientBoostingRegressor model. As in our random forest, we used 100 trees. This yielded a mean squared error of $252.27$, similar to Random Forest.
+Finally, our best-performing model was a gradient boosting machine.
+
+A gradient boosting machine is another ensemble model of decision trees. However, unlike random forest, it performs \textit{boosting} instead of bagging (or bootstrapping). Specifically, it is an additive model, constructing one new decision tree per iteration in order to minimize the loss of the overall ensemble.
+
+The final gradient boosting machine is of the form: \begin{align*}
+    F(x) = \sum_{m=1}^{M}\gamma_m h_m(x)
+\end{align*}
+where each $h_m$ is a base decision tree and the $gamma_m$ is a parameter controlling the contribution of each tree. The gradient boosting machine iteratively "boosts" - or improves - the overall ensemble by adding an extra decision tree to minimize the loss L at each step: \begin{align*}
+    F_m(x) = F_{m-1}(x) + \text{argmin}_{h_m} \sum_{i=1}^{n} L(y_i, F_{m-1}(x_i)+h_m(x_i))
+\end{align*}
+
+For training, we initialized our gradient boosting regressor with 100 trees, just as we did with our Random Forest model, as well as a learning rate of 0.1. This yielded a mean squared error of $243.69$, which is 2.1\% better than the random forest model, 8.6\% better than the initial linear regression model, and 16.2\% better than the support vector regression model. 
+
+\begin{table}[!htbp]
+\caption{Summary of results}
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{Model} & LR     & SVR    & RF     & GBR    \\ \hline
+\textbf{MSE}   & 264.54 & 282.99 & 248.95 & 242.69 \\ \hline
+\end{tabular}
+\end{table}
+
+\section{Model Evaluation}
+
+Both linear regression and support vector regressors perform comparatively poorly on our dataset. For the linear regression model, this may be because our dataset likely does not have a decision boundary that is linear in the features of our data points, making it impossible for a linear regression model to learn properly. 
+
+Meanwhile, the support vector regressor likely performed poorly because we were using a Gaussian kernel over the data points, which may be ineffective at learning over the small dataset we have right now. Furthermore, the support vector regressor has the additional downside of being less interpretable. Whereas with linear regression, the coefficients can indicate the "contribution" of each feature to the final decision, support vector machines with Gaussian kernels go through more transformations over the data than we can observe or explain.
+
+Finally, both the random forest and especially the gradient boosting model work fairly well. There are a couple reasons why these models might outperform our other baselines. 
+
+Critically, a large problem with our dataset is that it is fairly small, and models can easily suffer from both high bias (i.e. not fitting the training data sufficiently) and high variance (i.e. overfitting to the training data). Since both random forests and gradient boosting machines are ensemble methods that iteratively attempt to reduce the variance and bias of the ensemble respectively. This allows them to learn a good bias-variance trade-off that is especially beneficial for datasets like ours.
+
+In addition, since both random forests and gradient boosting machines use decision trees, both are highly interpretable. We can examine which features are most responsible for prediction, and how various splits in the model contribute to overall performance. 
 
 \section{Next Steps}
 
 \subsection{Data Processing}
-We would like to extract more songs from the Spotify database to bolster our dataset. This should be straightforward to do, by increasing the number of albums we draw songs from, though calls to the API our rather slow. Garnering a larger dataset should also allow us to properly split our dataset into train, dev and test sets, which will allow us to tune the hyperparameters for our models.
+First and foremost, we would like to extract more songs from the Spotify database to bolster our dataset. This should be straightforward to do, by increasing the number of albums we draw songs from, though calls to the API our rather slow. We would also like to use k-fold cross-validation in the future, which will allow us to be more robust to differing train-test splits and give us leverage to tune the hyperparameters and measure consistent performance.
 
-\subsection{Improve Features}
+\subsection{More Feature Engineering}
 As mentioned at the beginning, we will soon incorporate low-level audio features from Spotify's "Audio Analysis" tool, as well as artist metadata from the Spotify API. We will also explore more features from the Spotify database such as song age, location, audio sections, and signature.
 
 We may further try to construct more advanced features from historical data such as musical trends. Using Spotify's provided links to song previews, we may be able to extract more advanced features from the audio recordings of each song. This step will involve a lot more feature tuning and experimentation.
 
-\subsection{Improve Models}
-For our existing models, we will tune hyperparameters via grid search on our development set to improve performance.
+\subsection{Tuning Models and Analyzing results}
+For our existing models, we plan to tune hyperparameters via grid search on our development set to improve performance.
 
-For future models, we will try to tackle this problem by using further ensemble models to derive meaning from our features. In particular, neural networks may be able to extract more meaningful features from the audio tracks of each song.
+We also intend to analyze the features and their contributions to the model predictions. We would also like to compare and contrast what features different models decided were most important (and in what ways), and see if we can further tune our best-performing models based on this analysis.
 
 \section{Challenges}
-One challenge is to consider the effects of time on the popularity on the song. We may be able to tackle this by simply adding the age of the song as a additional feature.
+One challenge is to consider the effects of the age of a song on its popularity. Concretely, songs that are popular and released in 2018 likely sound very different from songs that are popular and released a decade ago, and furthermore, new songs that sound like popular old songs may not be very successful today. Right now, we get around this problem by only building our dataset from 2018 songs. We may be able to expand our dataset and tackle this problem by simply adding the age of the song as a additional feature, and we intend to investigate.
 
-Another challenge is that there is plenty of noise that influences a song's popularity, beyond its mere auditory features. While we have assumed a $100\%$ success rate with our Oracle, this may be unrealistic to achieve with a classifier.
+Furthermore, extracting additional low-level auditory features may be quite challenging. We intend to look into different API's we can use to help us extract useful information, but it is quite likely that most the useful information we would gain from low-level audio features are already represented in and accounted for by the high-level EchoNest features.
 
 
 % references section
