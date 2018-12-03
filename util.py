@@ -6,9 +6,9 @@ Lists of tracks are returned in our standard format:
 [(song id, song name, popularity)]
 
 We currently use tracks_from_albums(sp, year, num_albums) to randomly sample
-
-
 """
+
+from time import sleep
 
 def extract_songs(sp, playlist):
     """Get (song id, song name, popularity) out of playlists
@@ -78,12 +78,21 @@ def tracks_from_albums(sp, year, num_albums):
     album_ids = album_ids_from_year(sp, year, num_albums)
     print("Pulled {} albums".format(num_albums))
     info = []
-    for album_id in album_ids:
-        album = sp.album(album_id)
-        track_ids = [item["id"] for item in album["tracks"]["items"]]
-        tracks = [sp.track(tid) for tid in track_ids]
-        info.extend([(track["id"], track["name"], track["popularity"]) for track in tracks])
+    for i, album_id in enumerate(album_ids):
+        try:
+            sleep(0.1)
+            album = sp.album(album_id)
+            track_ids = [item["id"] for item in album["tracks"]["items"]]
+            for tid in track_ids:
+                sleep(0.1)
+                track = sp.track(tid)
+                info.append((track["id"], track["name"], track["popularity"]))
+        except:
+            print("Caught Spotipy error - breaking out of API calls")
+            break
         if len(info) % 100 == 0:
             print("Retrieved {} songs".format(len(info)))
+        if i % 50 == 0:
+            print("Retrived songs from {} albums".format(i))
     print("{} songs retrieved from {} albums".format(len(info), len(album_ids)))
     return info
