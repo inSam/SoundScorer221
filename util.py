@@ -96,3 +96,37 @@ def tracks_from_albums(sp, year, num_albums):
             print("Retrived songs from {} albums".format(i))
     print("{} songs retrieved from {} albums".format(len(info), len(album_ids)))
     return info
+
+def track_to_artistid_dict(sp, tracks):
+    """
+    Given list of tracks in form [[track_id, popularity, name]],
+    returns dictionary from all track_ids to artist IDs
+    """
+    track_artist_dict = {}
+    for info in tracks:
+        sleep(0.1)
+        track_id = info[0]
+        track = sp.track(track_id)
+        artist_id = track["artists"][0]["id"]
+        track_artist_dict[track_id] = artist_id
+        if len(track_artist_dict) % 100 == 0:
+            print("Stored {} artist IDs".format(len(track_artist_dict)))
+            print(list(track_artist_dict.items())[0])
+    return track_artist_dict
+
+def artistid_to_features_dict(sp, artist_ids):
+    """
+    Given iterable of artist_ids, returns a map from artist_id to feature_dict for each artist
+    e.g. {"093sDFBR924": {"followers" : 1038, "genres": ["pop", "rock"]},
+            "RV3910FWS": {"followers" : 31001, "genres": ["country"]}
+    """
+    feature_dict = {}
+    unique_ids = set(artist_ids)
+    for artist_id in unique_ids:
+        artist = sp.artist(artist_id)
+        feature_dict[artist_id] = {
+            "followers": artist["followers"]["total"],
+            "popularity": artist["popularity"],
+            "genres": artist["genres"]
+        }
+    return feature_dict
