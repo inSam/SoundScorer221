@@ -99,16 +99,18 @@ def tracks_from_albums(sp, year, num_albums):
 
 def track_to_artistid_dict(sp, tracks):
     """
-    Given list of tracks in form [[track_id, popularity, name]],
+    Given list of track_ids
     returns dictionary from all track_ids to artist IDs
     """
     track_artist_dict = {}
-    for info in tracks:
-        sleep(0.1)
-        track_id = info[0]
-        track = sp.track(track_id)
-        artist_id = track["artists"][0]["id"]
-        track_artist_dict[track_id] = artist_id
+    for i in range(0, len(tracks), 50):
+        track_ids = tracks[i : i + 50]
+        track_infos = sp.tracks(track_ids)["tracks"]
+        assert len(track_ids) == len(track_infos)
+        for track_id, info in zip(track_ids, track_infos):
+            if not info:
+                continue # song not found in Spotify
+            track_artist_dict[track_id] = info["artists"][0]["id"]
         if len(track_artist_dict) % 100 == 0:
             print("Stored {} artist IDs".format(len(track_artist_dict)))
             print(list(track_artist_dict.items())[0])

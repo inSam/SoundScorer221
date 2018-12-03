@@ -8,8 +8,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import util
 
-CLIENT_ID="810e2eec841546269c49f338f1be189a"
-CLIENT_SECRET="764290d0ab0f4f4484b0d4c7b701bdee"
+CLIENT_ID="ef162ffa47e649cc9246364fb382d6cf"
+CLIENT_SECRET="f5f37f59fb96455daad69f3b8ca68b52"
 DATA_PATH = "data/tracks_5kalbums.json"
 TRACK_TO_ARTIST_DICT_PATH = "data/track_to_artist_5kalbums.json"
 
@@ -23,7 +23,8 @@ def write_tracks_from_albums(sp):
 def write_track_to_artistid_dict(sp, read_path, write_path):
     with open(read_path,'r') as ff:
         songs = json.load(ff)
-        dict = util.track_to_artistid_dict(sp, songs)
+        track_ids = [s[0] for s in songs]
+        dict = util.track_to_artistid_dict(sp, track_ids)
         with open(write_path, 'w') as ff:
             json.dump(dict, ff, sort_keys=True, indent=4)
 
