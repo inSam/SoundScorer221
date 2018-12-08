@@ -116,3 +116,6 @@ milestone.synctex.gz
 
 #DS_STORE
 .DS_Store
+
+*.pptx
+*.pdf
