@@ -1,0 +1,646 @@
+%% bare_jrnl.tex
+%% V1.3
+%% 2007/01/11
+%% by Michael Shell
+%% see http://www.michaelshell.org/
+%% for current contact information.
+%%
+%% This is a skeleton file demonstrating the use of IEEEtran.cls
+%% (requires IEEEtran.cls version 1.7 or later) with an IEEE journal paper.
+%%
+%% Support sites:
+%% http://www.michaelshell.org/tex/ieeetran/
+%% http://www.ctan.org/tex-archive/macros/latex/contrib/IEEEtran/
+%% and
+%% http://www.ieee.org/
+
+
+\documentclass[journal]{IEEEtran}
+\usepackage{blindtext}
+\usepackage{graphicx, amsmath, amssymb}
+
+% Some very useful LaTeX packages include:
+% (uncomment the ones you want to load)
+
+
+% *** MISC UTILITY PACKAGES ***
+%
+%\usepackage{ifpdf}
+% Heiko Oberdiek's ifpdf.sty is very useful if you need conditional
+% compilation based on whether the output is pdf or dvi.
+% usage:
+% \ifpdf
+%   % pdf code
+% \else
+%   % dvi code
+% \fi
+% The latest version of ifpdf.sty can be obtained from:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/
+% Also, note that IEEEtran.cls V1.7 and later provides a builtin
+% \ifCLASSINFOpdf conditional that works the same way.
+% When switching from latex to pdflatex and vice-versa, the compiler may
+% have to be run twice to clear warning/error messages.
+
+
+
+
+
+
+% *** CITATION PACKAGES ***
+%
+%\usepackage{cite}
+% cite.sty was written by Donald Arseneau
+% V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
+% \cite{} output to follow that of IEEE. Loading the cite package will
+% result in citation numbers being automatically sorted and properly
+% "compressed/ranged". e.g., [1], [9], [2], [7], [5], [6] without using
+% cite.sty will become [1], [2], [5]--[7], [9] using cite.sty. cite.sty's
+% \cite will automatically add leading space, if needed. Use cite.sty's
+% noadjust option (cite.sty V3.8 and later) if you want to turn this off.
+% cite.sty is already installed on most LaTeX systems. Be sure and use
+% version 4.0 (2003-05-27) and later if using hyperref.sty. cite.sty does
+% not currently provide for hyperlinked citations.
+% The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/cite/
+% The documentation is contained in the cite.sty file itself.
+
+
+
+
+
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+% \ifCLASSINFOpdf
+  \usepackage[pdftex]{graphicx}
+  % declare the path(s) where your graphic files are
+  \graphicspath{{./images/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+\else
+  % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
+  % will default to the driver specified in the system graphics.cfg if no
+  % driver is specified.
+  % \usepackage[dvips]{graphicx}
+  % declare the path(s) where your graphic files are
+  % \graphicspath{{../eps/}}
+  % and their extensions so you won't have to specify these with
+  % every instance of \includegraphics
+  % \DeclareGraphicsExtensions{.eps}
+\fi
+% graphicx was written by David Carlisle and Sebastian Rahtz. It is
+% required if you want graphics, photos, etc. graphicx.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/graphics/
+% Another good source of documentation is "Using Imported Graphics in
+% LaTeX2e" by Keith Reckdahl which can be found as epslatex.ps or
+% epslatex.pdf at: http://www.ctan.org/tex-archive/info/
+%
+% latex, and pdflatex in dvi mode, support graphics in encapsulated
+% postscript (.eps) format. pdflatex in pdf mode supports graphics
+% in .pdf, .jpeg, .png and .mps (metapost) formats. Users should ensure
+% that all non-photo figures use a vector format (.eps, .pdf, .mps) and
+% not a bitmapped formats (.jpeg, .png). IEEE frowns on bitmapped formats
+% which can result in "jaggedy"/blurry rendering of lines and letters as
+% well as large increases in file sizes.
+%
+% You can find documentation about the pdfTeX application at:
+% http://www.tug.org/applications/pdftex
+
+
+
+
+
+% *** MATH PACKAGES ***
+%
+%\usepackage[cmex10]{amsmath}
+% A popular package from the American Mathematical Society that provides
+% many useful and powerful commands for dealing with mathematics. If using
+% it, be sure to load this package with the cmex10 option to ensure that
+% only type 1 fonts will utilized at all point sizes. Without this option,
+% it is possible that some math symbols, particularly those within
+% footnotes, will be rendered in bitmap form which will result in a
+% document that can not be IEEE Xplore compliant!
+%
+% Also, note that the amsmath package sets \interdisplaylinepenalty to 10000
+% thus preventing page breaks from occurring within multiline equations. Use:
+%\interdisplaylinepenalty=2500
+% after loading amsmath to restore such page breaks as IEEEtran.cls normally
+% does. amsmath.sty is already installed on most LaTeX systems. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/amslatex/math/
+
+
+
+
+
+% *** SPECIALIZED LIST PACKAGES ***
+%
+%\usepackage{algorithmic}
+% algorithmic.sty was written by Peter Williams and Rogerio Brito.
+% This package provides an algorithmic environment fo describing algorithms.
+% You can use the algorithmic environment in-text or within a figure
+% environment to provide for a floating algorithm. Do NOT use the algorithm
+% floating environment provided by algorithm.sty (by the same authors) or
+% algorithm2e.sty (by Christophe Fiorio) as IEEE does not use dedicated
+% algorithm float types and packages that provide these will not provide
+% correct IEEE style captions. The latest version and documentation of
+% algorithmic.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithms/
+% There is also a support site at:
+% http://algorithms.berlios.de/index.html
+% Also of interest may be the (relatively newer and more customizable)
+% algorithmicx.sty package by Szasz Janos:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithmicx/
+
+
+
+
+% *** ALIGNMENT PACKAGES ***
+%
+%\usepackage{array}
+% Frank Mittelbach's and David Carlisle's array.sty patches and improves
+% the standard LaTeX2e array and tabular environments to provide better
+% appearance and additional user controls. As the default LaTeX2e table
+% generation code is lacking to the point of almost being broken with
+% respect to the quality of the end results, all users are strongly
+% advised to use an enhanced (at the very least that provided by array.sty)
+% set of table tools. array.sty is already installed on most systems. The
+% latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/required/tools/
+
+
+%\usepackage{mdwmath}
+%\usepackage{mdwtab}
+% Also highly recommended is Mark Wooding's extremely powerful MDW tools,
+% especially mdwmath.sty and mdwtab.sty which are used to format equations
+% and tables, respectively. The MDWtools set is already installed on most
+% LaTeX systems. The lastest version and documentation is available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/mdwtools/
+
+
+% IEEEtran contains the IEEEeqnarray family of commands that can be used to
+% generate multiline equations as well as matrices, tables, etc., of high
+% quality.
+
+
+%\usepackage{eqparbox}
+% Also of notable interest is Scott Pakin's eqparbox package for creating
+% (automatically sized) equal width boxes - aka "natural width parboxes".
+% Available at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/eqparbox/
+
+
+
+
+
+% *** SUBFIGURE PACKAGES ***
+%\usepackage[tight,footnotesize]{subfigure}
+% subfigure.sty was written by Steven Douglas Cochran. This package makes it
+% easy to put subfigures in your figures. e.g., "Figure 1a and 1b". For IEEE
+% work, it is a good idea to load it with the tight package option to reduce
+% the amount of white space around the subfigures. subfigure.sty is already
+% installed on most LaTeX systems. The latest version and documentation can
+% be obtained at:
+% http://www.ctan.org/tex-archive/obsolete/macros/latex/contrib/subfigure/
+% subfigure.sty has been superceeded by subfig.sty.
+
+
+
+%\usepackage[caption=false]{caption}
+%\usepackage[font=footnotesize]{subfig}
+% subfig.sty, also written by Steven Douglas Cochran, is the modern
+% replacement for subfigure.sty. However, subfig.sty requires and
+% automatically loads Axel Sommerfeldt's caption.sty which will override
+% IEEEtran.cls handling of captions and this will result in nonIEEE style
+% figure/table captions. To prevent this problem, be sure and preload
+% caption.sty with its "caption=false" package option. This is will preserve
+% IEEEtran.cls handing of captions. Version 1.3 (2005/06/28) and later
+% (recommended due to many improvements over 1.2) of subfig.sty supports
+% the caption=false option directly:
+%\usepackage[caption=false,font=footnotesize]{subfig}
+%
+% The latest version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/subfig/
+% The latest version and documentation of caption.sty can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/caption/
+
+
+
+
+% *** FLOAT PACKAGES ***
+%
+%\usepackage{fixltx2e}
+% fixltx2e, the successor to the earlier fix2col.sty, was written by
+% Frank Mittelbach and David Carlisle. This package corrects a few problems
+% in the LaTeX2e kernel, the most notable of which is that in current
+% LaTeX2e releases, the ordering of single and double column floats is not
+% guaranteed to be preserved. Thus, an unpatched LaTeX2e can allow a
+% single column figure to be placed prior to an earlier double column
+% figure. The latest version and documentation can be found at:
+% http://www.ctan.org/tex-archive/macros/latex/base/
+
+
+
+%\usepackage{stfloats}
+% stfloats.sty was written by Sigitas Tolusis. This package gives LaTeX2e
+% the ability to do double column floats at the bottom of the page as well
+% as the top. (e.g., "\begin{figure*}[!b]" is not normally possible in
+% LaTeX2e). It also provides a command:
+%\fnbelowfloat
+% to enable the placement of footnotes below bottom floats (the standard
+% LaTeX2e kernel puts them above bottom floats). This is an invasive package
+% which rewrites many portions of the LaTeX2e float routines. It may not work
+% with other packages that modify the LaTeX2e float routines. The latest
+% version and documentation can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/sttools/
+% Documentation is contained in the stfloats.sty comments as well as in the
+% presfull.pdf file. Do not use the stfloats baselinefloat ability as IEEE
+% does not allow \baselineskip to stretch. Authors submitting work to the
+% IEEE should note that IEEE rarely uses double column equations and
+% that authors should try to avoid such use. Do not be tempted to use the
+% cuted.sty or midfloat.sty packages (also by Sigitas Tolusis) as IEEE does
+% not format its papers in such ways.
+
+
+%\ifCLASSOPTIONcaptionsoff
+%  \usepackage[nomarkers]{endfloat}
+% \let\MYoriglatexcaption\caption
+% \renewcommand{\caption}[2][\relax]{\MYoriglatexcaption[#2]{#2}}
+%\fi
+% endfloat.sty was written by James Darrell McCauley and Jeff Goldberg.
+% This package may be useful when used in conjunction with IEEEtran.cls'
+% captionsoff option. Some IEEE journals/societies require that submissions
+% have lists of figures/tables at the end of the paper and that
+% figures/tables without any captions are placed on a page by themselves at
+% the end of the document. If needed, the draftcls IEEEtran class option or
+% \CLASSINPUTbaselinestretch interface can be used to increase the line
+% spacing as well. Be sure and use the nomarkers option of endfloat to
+% prevent endfloat from "marking" where the figures would have been placed
+% in the text. The two hack lines of code above are a slight modification of
+% that suggested by in the endfloat docs (section 8.3.1) to ensure that
+% the full captions always appear in the list of figures/tables - even if
+% the user used the short optional argument of \caption[]{}.
+% IEEE papers do not typically make use of \caption[]'s optional argument,
+% so this should not be an issue. A similar trick can be used to disable
+% captions of packages such as subfig.sty that lack options to turn off
+% the subcaptions:
+% For subfig.sty:
+% \let\MYorigsubfloat\subfloat
+% \renewcommand{\subfloat}[2][\relax]{\MYorigsubfloat[]{#2}}
+% For subfigure.sty:
+% \let\MYorigsubfigure\subfigure
+% \renewcommand{\subfigure}[2][\relax]{\MYorigsubfigure[]{#2}}
+% However, the above trick will not work if both optional arguments of
+% the \subfloat/subfig command are used. Furthermore, there needs to be a
+% description of each subfigure *somewhere* and endfloat does not add
+% subfigure captions to its list of figures. Thus, the best approach is to
+% avoid the use of subfigure captions (many IEEE journals avoid them anyway)
+% and instead reference/explain all the subfigures within the main caption.
+% The latest version of endfloat.sty and its documentation can obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/endfloat/
+%
+% The IEEEtran \ifCLASSOPTIONcaptionsoff conditional can also be used
+% later in the document, say, to conditionally put the References on a
+% page by themselves.
+
+
+
+
+
+% *** PDF, URL AND HYPERLINK PACKAGES ***
+%
+\usepackage{url}
+% url.sty was written by Donald Arseneau. It provides better support for
+% handling and breaking URLs. url.sty is already installed on most LaTeX
+% systems. The latest version can be obtained at:
+% http://www.ctan.org/tex-archive/macros/latex/contrib/misc/
+% Read the url.sty source comments for usage information. Basically,
+% \url{my_url_here}.
+
+
+
+
+
+% *** Do not adjust lengths that control margins, column widths, etc. ***
+% *** Do not use packages that alter fonts (such as pslatex).         ***
+% There should be no need to do such things with IEEEtran.cls V1.6 and later.
+% (Unless specifically asked to do so by the journal or conference you plan
+% to submit to, of course. )
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\usepackage{graphicx}
+\graphicspath{ {./images/}}
+
+
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{An Ensemble Learning Approach to Scoring Song Popularity}
+
+
+\author{Sam~Xu~\IEEEmembership{samx@stanford.edu},
+        Joyce~Xu~\IEEEmembership{jexu@stanford.edu},
+        and~Eric~Tang~\IEEEmembership{etang21@stanford.edu}}
+
+
+% The paper headers
+\markboth{CS 221 (Autumn 2018) Final Report}%
+{}
+% The only time the second header will appear is for the odd numbered pages
+% after the title page when using the twoside option.
+
+
+% make the title area
+\maketitle
+
+
+\begin{abstract}
+This project aims to predict the popularity of songs by analyzing acoustic features such as tempo, duration, mode, loudness, key; artist information such as location and popularity; and metadata such as release title and year. We extract audio features via EchoNest and the Spotify API, and train a variety of models including linear regression, support vector regression, random forest, and gradient boosting machine to predict the success and popularity of the song. We find that ensemble methods such as random forests and gradient boosting machines perform the best on the high-level audio features of songs.
+\end{abstract}
+
+
+
+\section{Introduction}
+Music is a multi-billion dollar industry in which the majority of revenue is being generated by a limited number of mainstream "hits." These hits, however, are challenging to predict and produce. For one, top songs can vary widely in sound and style. Meanwhile, songs that are similar in sound and style can and do also vary widely in popularity. In addition, trends in music come and go rapidly, so popularity looks different year to year. 
+
+With our project, we intend to build a variety of models to predict the popularity of a song by analyzing its audio features and metadata. Such a tool would be valuable for record labels, streaming services, and average consumers; it would also help the research community understand what acoustic features are currently popular with the public. In this report, we present a cohesive feature extraction pipeline and strong ensemble leaning models to predict song popularity in a highly-interpretable manner. 
+
+\section{Data}
+\subsection{Dataset}
+Our dataset comprises 7,473 songs extracted from the Spotify API, which provides acoustic features, author information, song metadata, and a popularity score. Spotify's popularity score ranges from 0 (least popular) to 100 (most popular), and is determined as a function of number of plays on Spotify and the recency of those plays.
+
+We pulled these songs from Spotify's 1,000 top albums released in 2018, which gives us a range of songs across popularity, genre and acoustic features. In addition, limiting our analysis to songs released in 2018 partially controls for the effect of age on popularity.
+
+We further made sure to eliminate all duplicate songs from our dataset, as some songs are cross-listed on multiple albums. This should prevent our score from being artificially inflated, as it would be if some songs appeared on both our training and test set. We use an 85/15/15 train/dev/test split throughout the paper. In this progress milestone, as we are prototyping models without tuning hyperparameters, we report evaluation metrics on our development set.
+
+
+\subsection{Concrete Example}
+For each song in our dataset, we model its features as extracted from the Spotify and Echo Nest APIs. Here's a sample representation for the song \textit{Never Gonna Give You Up}:
+\begin{align*}
+    "TRAXLZU12903D05F94 "&: \{ \\
+  &"features": \{\\
+  &artist\_name: Rick Astley \\
+  &loudness: -7.75 \\
+  &tempo: 113.359 \\
+  &duration: 211.69587 \\
+  &mode: 1 \\
+  &energy: 48.149 \\
+  &previewurl: p.scdn.co/mp3/99 \\
+  ...
+        &\},\\
+    \}
+\end{align*}
+We format songs' feature dictionaries as Pandas dataframes for consumption, then input the song dataframes into the models described below. Our desired output is simply the Spotify popularity rating. Although a song's popularity fluctuates over time, we predict only the current popularity rating.
+
+\subsection{Data Exploration}
+
+Below, we've plotted the distribution of song popularity in our dataset.
+
+\includegraphics[width=8cm]{images/popularity_distribution.png}
+
+Our dataset appears approximately normally distributed around mean 50. Also of note, there is a significant spike of highly unpopular songs with score 0. These unpopular songs likely comprise a "long tail" of music on Spotify which users rarely listen to.
+
+As a gut check that Spotify's popularity rating is sensible, we also printed out the most popular songs in our dataset. The five most popular songs in our dataset are:
+\begin{itemize}
+  \item 'Promises (with Sam Smith)', 95
+  \item 'SICKO MODE', 96
+  \item 'Without Me', 96
+  \item 'Happier', 98
+  \item 'Taki Taki (with Selena Gomez, Ozuna & Cardi B)', 100
+\end{itemize}
+
+As we can see, the most popular songs based on Spotify's rating indeed correlate to the most streamed new releases by famous artists, so our labels appear to be in order.
+
+\subsection{Feature Selection} \\
+We extract three broad categories of features for use in our regression models. The first are low-level audio features, such as song duration and time signature, extracted from Spotify's Audio Analysis feature. The second are high-level audio features such as "danceability" and "valence", extracted from audio files using The Echo Nest API. The third are metadata for each song, such as artist information and genre information. \\
+
+\subsubsection{Spotify Audio Analysis}
+The most low-level audio features are those provided by Spotify's Audio Analysis feature. This provides both concrete song features, such as duration and average volume, as well as estimated features like the song's key and tempo. The audio analysis also provides more high-level analysis by subdividing the song into sections (i.e. Chorus, Bridge, Verse) and further subdividing sections into segments. \\
+
+\subsubsection{Echo Nest Audio Features}
+We then add seven high-level audio features extracted by The Echo Nest API, which is integrated into the Spotify API. The Echo Nest uses proprietary audio analysis algorithms to extract high-level features from audio files. The seven features we used are "acousticness", "danceability", "energy", "loudness", "speechiness", "tempo", "valence". These audio features are extracted directly from the audio files of each song. The Echo Nest's algorithms are proprietary, and we are unable to access how they extracted these features, but we use them in all experiments described below. \\
+
+\subsubsection{Song and Artist Metadata}
+We further experiment with utilizing song and artist metadata. In particular, for the artist, we try adding a feature corresponding to the artist's number of followers on Spotify and report results both with and without this additional feature. 
+
+For songs, we experiment with adding genre information. We first extract all labeled genres in our training set, which can be found for each song with Spotify's API. This provides us 563 different genres, containing everything as generic as "pop" to oddly obscure labels such as "miami hip hop," "brostep," and "vapor soul." 
+
+For every genre that appears in at least 1\% of our training set, we add a binary feature to our training data indicating its presence for that song. In our training set, there are 96 genres that appear in at least 1\% of songs. This adds 96 more features to our data, which are mostly sparse.
+
+\subsection{Data Split}
+After extracting these features for each song in our dataset, we converted our list of songs and features into a Pandas dataframe for consumption by scikit-learn models. We then split our data according to a 85/15/15 train/dev/test split, and trained the models described in the following section. \\
+
+
+\section{Models}
+
+For our initial evaluations, we ran the following models on our dataset with the features described above.
+
+\subsection{Linear Regression (Baseline)}
+For our first baseline, we trained a simple linear regression model on our dataset. Linear regression fits a coefficient or "weight" to each feature in the training data, which can be multiplied with the feature and summed to obtain a prediction for the popularity score. We implemented and fit the linear regression model in scikit-learn.
+
+\subsection{SVR (Baselin)}
+As another non-ensemble baseline, we chose to to leverage a non-linear Support Vector Regression (SVR). SVR applies hinge loss and non-linear kernels to regression problems, performing regressions on a dataset and generating non-linear contours. Our SVR used a radial basis function (rbf) kernel, and through hyperparameter tuning we found the optimal regularization parameter to be $C = 10$. We also trained the SVR and performed tuning in scikit-learn.
+
+\subsection{Random Forest Regression}
+Next, we focused on ensemble models.
+
+Random forests are a class of ensemble algorithms that output the mean prediction from its many decision trees, each of which a) subsamples the feature space and b) subsamples the dataset. 
+
+A decision tree takes a set of data points and continuously splits it, one feature at a time, in attempt to accurately predict the class or value of each data point at its leaf node. Decision trees are notoriously high variance, because they easily overfit to specific (possibly non-generalize) patterns in the training set. Random forests reduce this variance by constructing a multitude of trees and "bootstrapping" (or randomly sampling with replacement) from both the sample space and the feature space. Since the random forest takes the average of multiple trees that are trained on only a subset of the data and a subset of the features, it is more robust to noise in the training data.
+
+Specifically, after training a random forest of $B$ decision trees, we predict: \begin{align*}
+    \hat{f}(x) = \frac{1}{B}\sum_{b=1}^{B} f_b(x)
+\end{align*}
+
+We trained a Random Forest Regression model with scikit-learn on our dataset. Again, through hyperparameter tuning, we found our best performing model on the validation set was a forest with 200 trees and a minimum samples split of 2, meaning the nodes of the tree will continue to be expanded until all leaves of the tree are pure, or contain less than 2 samples. 
+
+\subsection{Gradient Boosting Decision Trees}
+Finally, we tried a second ensemble model: the gradient boosting machine.
+
+A gradient boosting machine is another ensemble model of decision trees. However, unlike random forest, it performs \textit{boosting} instead of bagging (or bootstrapping). Specifically, it is an additive model, constructing one new decision tree per iteration in order to minimize the loss of the overall ensemble.
+
+The final gradient boosting machine is of the form: \begin{align*}
+    F(x) = \sum_{m=1}^{M}\gamma_m h_m(x)
+\end{align*}
+where each $h_m$ is a base decision tree and the $gamma_m$ is a parameter controlling the contribution of each tree. The gradient boosting machine iteratively "boosts" - or improves - the overall ensemble by adding an extra decision tree to minimize the loss L at each step: \begin{align*}
+    F_m(x) = F_{m-1}(x) + \text{argmin}_{h_m} \sum_{i=1}^{n} L(y_i, F_{m-1}(x_i)+h_m(x_i))
+\end{align*}
+
+For training, we built a gradient boosting regressor with XGBoost. Again, through extensive hyperparameter tuning and search, we found the best-performing model used 400 trees, a learning rate of 0.1, and a max depth per tree of 4. \\
+
+\section{Results}
+
+We first report test set results of training the aforementioned models on the full set of features, which includes the audio features, the artist information, and the genre information. \\
+
+\begin{center}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Model} & \textbf{MSE Loss} \\ \hline
+Linear Regression  & 191.81                 \\ \hline
+SVR                & 174.03                 \\ \hline
+Random Forest      & 134.35                 \\ \hline
+Gradient Boosting  & 135.42                  \\ \hline
+\end{tabular} \\
+\end{center}
+
+\quad\newline
+As we can see, whereas our first two models did not perform particularly well on our dataset, our next two models - random forest and gradient boosting trees - perform significantly better. The linear regression baseline is the weakest, and random forest the strongest. However, seeing as the random forest and gradient boosting losses are within a point of one another, they appear to have nearly identical performance. 
+
+We reported the model performances with the full set of features above, but we also trained the same models on just the audio features, just the audio features and genre information, and just the audio features and artist followers. We wanted to evaluate how much the genre information improves model performance, as well as how much artist information improves performance. A summary of the comparison is shown in the following graph and table.
+
+\begin{center}
+\includegraphics[width = 0.4\textwidth]{images/221_model_comparison.png} \\
+
+\caption{Comparative MSE Losses}
+\centering
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|}
+\hline
+\textbf{} & Audio  & Audio + Artist  & Audio + Genre  & All    \\ \hline
+\textbf{LR}   & 247 & 247 & 201 & 191 \\ \hline
+\textbf{SVR}   & 260 & 244 & 223 & 174 \\ \hline
+\textbf{RF}   & 231 & 185 & 179 & 134 \\ \hline
+\textbf{GBR}   & 234 & 187 & 183 & 135 \\ \hline
+\end{tabular}
+\end{center}
+
+\quad\newline
+Unsurprisingly, adding information about artist followers significantly helped the performance of our models, especially the ensemble models. Interestingly, genre information helped \textit{more} than artist information, especially for our baseline models. This is likely because the artist follower information is encapsulated in one feature, and for models such as linear regression, it is easier to learn to put a high weight on a single feature than to learn complicated relationships between 96 genre features and song popularity. 
+
+Finally, in the following table, we show the actual popularity and predicted popularity of a few of the most popular and least popular songs in our test set:
+
+\begin{center}
+\textbf{Example Random Forest Predictions}
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Song} & \textbf{Actual} & \textbf{Predicted} \\ \hline
+Dangerous (feat. Jeremih and PnB Rock)  & 0 & 10.03   \\ \hline
+Action - Revised Version & 0 & 0.0 \\ \hline
+Kings Of The World   & 0 & 0.0  \\ \hline
+Almost Slipped  & 0 & 9.655  \\ \hline
+Nuketown (feat. Juice WRLD) & 0 & 21.14 \\ \hline
+Trio Sonata No. 3 in D Minor  & 0 & 5.46 \\ \hline
+Mozart: Requiem in D Minor, K. 626 & 0 & 4.58  \\ \hline
+... & ... & ... \\ \hline
+Youngblood & 85 & 75.58 \\ \hline
+Lean Wit Me & 86 & 73.20 \\ \hline
+Jackie Chan & 87 & 61.88 \\ \hline
+changes & 89 & 68.86 \\ \hline
+lovely (with Khalid) & 90 & 55.94 \\ \hline
+SAD! & 92 & 72.86 \\ \hline
+Taki Taki & 99 & 63.30 \\ \hline
+\end{tabular} \\
+\end{center}
+
+\quad\newline
+In general, we find that our best-performing random forest model (trained on the full set of features) is fairly good at predicting relative popularity, and can distinguish between very high-popularity and low-popularity songs. However, from the example predictions above, it appears that the model tends to predict more median values, and rarely makes a popularity prediction above 80. This is consistent with the model learning to minimize the l2 loss, which heavily penalizes large prediction errors.
+
+\section{Evaluation}
+
+\subsection{Model Evaluation}
+
+Both linear regression and support vector regressors perform comparatively poorly on our dataset. For the linear regression model, this may be because our dataset likely does not have a decision boundary that is linear in the features of our data points, making it impossible for a linear regression model to learn properly. 
+
+Meanwhile, the support vector regressor likely performed poorly because we were using a Gaussian kernel over the data points, which may be ineffective at learning over the small dataset we have right now. Furthermore, the support vector regressor has the additional downside of being less interpretable. Whereas with linear regression, the coefficients can indicate the "contribution" of each feature to the final decision, support vector machines with Gaussian kernels go through more transformations over the data than we can observe or explain.
+
+Finally, both the random forest and especially the gradient boosting model work fairly well. There are a couple reasons why these models might outperform our other baselines. 
+
+Critically, a large problem with our dataset is that it is fairly small, and models can easily suffer from both high bias (i.e. not fitting the training data sufficiently) and high variance (i.e. overfitting to the training data). Since both random forests and gradient boosting machines are ensemble methods that iteratively attempt to reduce the variance and bias of the ensemble respectively. This allows them to learn a good bias-variance trade-off that is especially beneficial for datasets like ours.
+
+\subsection{Prediction Evaluation}
+
+We plot the predicted popularity distribution of songs in the test set using our best-performing random forest model below:
+
+\includegraphics[width=8cm]{images/pred_popularity_distribution.png}
+
+This distribution is consistent with the example song popularity predictions we gave earlier. In particular, we note that popularity predictions are normally distributed and clustered around a mean in the low 40's, with very few predictions being made in the 0-20 range and the 70-100 range. 
+
+
+\subsection{Feature Analysis}
+The primary contribution and most interesting aspect of our models is their high degree of interpretability. 
+
+For example, even in the linear regression baseline, we can extract information about how the model makes predictions. The learned coefficient weights provide a crude approximation for the importance of each feature. This is especially insightful for examining our audio features. For example, the audio feature most strongly predictive of popularity is 'danceability', with a weight of $7.52$. Meanwhile, features such as 'speechiness' are strongly indicative of unpopularity, with a weight of $-6.83$. 
+
+In addition, since both random forests and gradient boosting machines use decision trees, both are highly interpretable. We can examine which features are most responsible for prediction, and how various splits in the model contribute to overall performance. 
+
+First, we can examine which features contribute most significantly to the final model prediction: \\
+
+\includegraphics[width=9cm]{images/feat_imp.png}
+
+\quad\newline
+As expected, the number of artist followers is at least twice as significant as any other single feature in the prediction. The next most important features are audio features such as loudness, acousticness, and valence. Finally, some genres are also fairly indicative of song popularity. "Classical" is the genre that is most telling of popularity, followed by "album rock," "southern hip hop," and "pop."
+
+Furthermore, we can examine individual decision trees to understand \textit{how} each feature affects the final decision. Below is one such example of a tree: 
+
+\includegraphics[width=8cm]{images/gbm_example_tree.png}
+
+/\\TODO: finish explanation/evaluation 
+
+
+\section{Next Steps -- TODO: REPLACE}
+
+\subsection{Data Processing}
+First and foremost, we would like to extract more songs from the Spotify database to bolster our dataset. This should be straightforward to do, by increasing the number of albums we draw songs from, though calls to the API our rather slow. We would also like to use k-fold cross-validation in the future, which will allow us to be more robust to differing train-test splits and give us leverage to tune the hyperparameters and measure consistent performance.
+
+\subsection{More Feature Engineering}
+As mentioned at the beginning, we will soon incorporate low-level audio features from Spotify's "Audio Analysis" tool, as well as artist metadata from the Spotify API. We will also explore more features from the Spotify database such as song age, location, audio sections, and signature.
+
+We may further try to construct more advanced features from historical data such as musical trends. Using Spotify's provided links to song previews, we may be able to extract more advanced features from the audio recordings of each song. This step will involve a lot more feature tuning and experimentation.
+
+\subsection{Tuning Models and Analyzing results}
+For our existing models, we plan to tune hyperparameters via grid search on our development set to improve performance.
+
+We also intend to analyze the features and their contributions to the model predictions. We would also like to compare and contrast what features different models decided were most important (and in what ways), and see if we can further tune our best-performing models based on this analysis.
+
+\section{Challenges}
+One challenge is to consider the effects of the age of a song on its popularity. Concretely, songs that are popular and released in 2018 likely sound very different from songs that are popular and released a decade ago, and furthermore, new songs that sound like popular old songs may not be very successful today. Right now, we get around this problem by only building our dataset from 2018 songs. We may be able to expand our dataset and tackle this problem by simply adding the age of the song as a additional feature, and we intend to investigate.
+
+Furthermore, extracting additional low-level auditory features may be quite challenging. We intend to look into different API's we can use to help us extract useful information, but it is quite likely that most the useful information we would gain from low-level audio features are already represented in and accounted for by the high-level EchoNest features.
+
+
+% references section
+
+% can use a bibliography generated by BibTeX as a .bbl file
+% BibTeX documentation can be easily obtained at:
+% http://www.ctan.org/tex-archive/biblio/bibtex/contrib/doc/
+% The IEEEtran BibTeX style support page is at:
+% http://www.michaelshell.org/tex/ieeetran/bibtex/
+%\bibliographystyle{IEEEtran}
+% argument is your BibTeX string definitions and bibliography database(s)
+%\bibliography{IEEEabrv,../bib/paper}
+%
+% <OR> manually copy in the resultant .bbl file
+% set second argument of \begin to the number of references
+% (used to reserve space for the reference number labels box)
+\begin{thebibliography}{1}
+\bibitem{marketing}
+Myra Interiano, Kamyar Kazemi, Lijia Wang, Jienian Yang, Zhaoxia Yu, Natalia L. Komarova, \emph{Musical trends and predictability of success in contemporary songs in and out of the top charts} \hskip 1em plus 0.5em
+minus 0.4em\relax Royal Society Open Sciences, 2006.
+\bibitem{greenlight}
+James Pham, Edrick Kyauk, Edwin Park, \emph{Predicting Song Popularity}
+\hskip 1em plus 0.5em minus 0.4em\relax Stanford University CS 229, 2015.
+\bibitem{spotify_api}
+\texttt{\url{https://developer.spotify.com/documentation/web-api/}}
+\bibitem{cnn_prediction}
+Li-Chia Yang, Szu-Yu Chou, Jen-Yu Liu, Yi-Hsuan Yang, Yi-An Chen, \emph{REVISITING THE PROBLEM OF AUDIO-BASED HIT SONG PREDICTION USING
+CONVOLUTIONAL NEURAL NETWORKS}
+\hskip 1em plus 0.5em minus 0.4em\relax Academia Sinica, Taiwan, 2017.
+
+\end{thebibliography}
+
+
+% that's all folks
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
