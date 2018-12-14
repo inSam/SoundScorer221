@@ -603,10 +603,9 @@ For our existing models, we plan to tune hyperparameters via grid search on our 
 
 We also intend to analyze the features and their contributions to the model predictions. We would also like to compare and contrast what features different models decided were most important (and in what ways), and see if we can further tune our best-performing models based on this analysis.
 
-\section{Challenges}
-One challenge is to consider the effects of the age of a song on its popularity. Concretely, songs that are popular and released in 2018 likely sound very different from songs that are popular and released a decade ago, and furthermore, new songs that sound like popular old songs may not be very successful today. Right now, we get around this problem by only building our dataset from 2018 songs. We may be able to expand our dataset and tackle this problem by simply adding the age of the song as a additional feature, and we intend to investigate.
+\section{Error Analysis}
+According ot the data distribution chart from data exploration, we observe that the popularity distribution is bi-modal - one approximately normal distribution centered at 40, and one spike distribution for songs with close to zero popularity. However, by looking at the distribution of our predictions, we can see see that our model fails to predict the secondary, large cluster of songs with zero popularity. These failed predictions contributed the the most to our overall MSE.This issue generalizes to the fact that our model fails to accurately predict extremely popular songs, and extremely unpopular songs.
 
-Furthermore, extracting additional low-level auditory features may be quite challenging. We intend to look into different API's we can use to help us extract useful information, but it is quite likely that most the useful information we would gain from low-level audio features are already represented in and accounted for by the high-level EchoNest features.
 
 
 % references section
