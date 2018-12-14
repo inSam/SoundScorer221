@@ -578,11 +578,14 @@ First, we can examine which features contribute most significantly to the final 
 \quad\newline
 As expected, the number of artist followers is at least twice as significant as any other single feature in the prediction. The next most important features are audio features such as loudness, acousticness, and valence. Finally, some genres are also fairly indicative of song popularity. "Classical" is the genre that is most telling of popularity, followed by "album rock," "southern hip hop," and "pop."
 
-Furthermore, we can examine individual decision trees to understand \textit{how} each feature affects the final decision. Below is one such example of a tree: 
+Furthermore, we can examine individual decision trees to understand \textit{how} each feature affects the final decision. Below is one such example of a tree: \\
 
 \includegraphics[width=8cm]{images/gbm_example_tree.png}
 
-/\\TODO: finish explanation/evaluation 
+\quad\newline
+Recall that the gradient boosting regressor makes its final prediction by taking a weighted sum of its trees' predictions. This particular tree's contribution is a score of anywhere between 0.2 and 2.79. By looking at the individual decision trees, we can get an understanding of feature value cutoffs and how certain features relate to others. For example, in the tree above, 'speechiness' is only a relevant factor for predictions where the 'loudness' score is less than -13.6. 
+
+Decision trees unveil dynamics of and between different features in a highly interpretable manner. Our models have revealed the audio features that are most salient in song popularity prediction, as well as the genres and genre combinations that achieve the greatest success. 
 
 
 \section{Next Steps -- TODO: REPLACE}
