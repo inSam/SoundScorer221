@@ -596,6 +596,13 @@ In our data exploration section, we observed that the popularity distribution is
 
 To test the impact of these outliers on our final accuracy, we trained and evaluated the Random Forest and Gradient Boosting Regressor models on our dataset, but with all songs of 0 popularity removed. This removes 273 songs from our dataset, amounting to 2.3\% of our dataset. Unfortunately, removing this mode from our dataset fails to dramatically improve performance. Our Random Forest model evaluates to an MSE of $140.01$, and our Gradient Boosting Regressor evaluates to an MSE of $143.80$. This lack of improvement may be due to the small number of songs clustered at popularity 0, relative to the size of the entire dataset. It may also indicate that our model still struggles to predict songs in the middle of the popularity range, as well as those at the extremes.
 
+\subsection{Single Genre Classification}
+We hypothesized that another possible contributor to error is the different popularities associated with features in different genres. For example, the negative coefficient of 'speechiness' in our linear regression model indicates that 'speechiness' is associated with lower popularity. In genres like rap, however, 'speechiness' may imply greater popularity.
+
+To test this hypothesis, we evaluated our models using only songs from a single genre. We evaluated our models solely on music tagged under the 'rap' genre, since this genre is one of the most popular genres in our dataset yet remains different from other modern genres (for the reasons described above). We have $1,763$ songs in our database tagged as 'rap', which amounts to $15\%$ of our dataset. With this smaller dataset, the evaluated Mean Squared Error is highly dependent on our train-test split. We average across five different random train-test splits, findinh an average MSE of $151.60$ for the Random Forest Regressor, and an average MSE of $167.46$ for our Gradient Boosting Regressor. While these are significantly higher than our results on the full dataset, the increased MSE is likely due to the smaller size of the dataset when limiting to one genre. Since we have simplified the problem by limiting the data to one genre, yet simultaneously toughened the problem by reducing the dataset size, the true impact of limiting the problem to one genre remains unclear.
+
+\subsection{}
+
 
 \section{Next Steps -- TODO: REPLACE}
 
