@@ -373,6 +373,20 @@ Music is a multi-billion dollar industry in which the majority of revenue is bei
 
 With our project, we intend to build a variety of models to predict the popularity of a song by analyzing its audio features and metadata. Such a tool would be valuable for record labels, streaming services, and average consumers; it would also help the research community understand what acoustic features are currently popular with the public. In this report, we present a cohesive feature extraction pipeline and strong ensemble leaning models to predict song popularity in a highly-interpretable manner.
 
+\section{Previous Work}
+
+\subsection{Musical Trends and Predictability of Success in Contemporary Songs (Myra 2018)}
+Myra and Interiano (2018) published a study on predicting the success of contemporary songs \cite{marketing}. Unlike our model, the study defines success as whether or not the song made it into the top 100 charts within its lifespan. Consquently, the Myra model attempts classfication, not regression. They use acoustic features such as timbre, tonality, and danceability as their primary features, which are extracted through a third-party framework in which the features are manually rated by volunteers.
+
+Using Random Forests, the study finds some accoustic trends that our model hints at, too. For example, the study observes that successful songs tends to be happier, brighter, danceable, and less relaxed. Our model finds that more successful songs tend to be louder, less speechy, have higher energy and more danceable. Notice that both models reach the same conclusions about energy/danceability, but our model puts more weight in acoustic features like loudness and speechiness. This difference is likely a consequence of different features, extraction frameworks, and temporal settings.
+
+The Myra study initially tried two models: a two layer neural network and a random forest model. Similar to our results, they found that the random forest model performed the best. Both Myra and us also found that accoustic features alone fail to provide enough information for an accurate estimator. Myra  achieved only $74\%$ accuracy using accoustic features and song genre. However, by adding a feature that indicates the 'pop-star' status of the artist, they were able to raise their accuracy to $85\%$. We achieved a similar boost by featurizing genre tags and an artist's number of followers.
+
+\subsection{Predicting Song Popularity (Pham, Kyauk, Park)}
+A previous CS 229 project by Pham, Kyauk and Park also attempted to predict song popularity by classifying songs as successful or unsucessful using acoustic features \cite{greenlight}. However, unlike Myra's study or our model, which finds that ensemble methods peform best, the Pham project chose methods such as Logistic Regression, State Vector Machines, Discriminant Analysis and Multilayered Perceptrons. Overall, none of their classification models performed as well as the Random Forest results found in Myra, with all their models performing below $80\%$.
+
+This study reinforces our belief that ensemble methods like random forest and gradient boosted decision trees are the best strategy for a problem like song popularity, where many of the features are simply labels and indicators. This study also inspired us to use the F1 score to indicate feature importance. Using this measure of feature importance, our paper builds on Myra's work and Pham's work to show that artist popularity is the factor most predictive of a track's success.
+
 \section{Data}
 \subsection{Dataset}
 Our dataset comprises 11,847 songs extracted from the Spotify API, which provides acoustic features, author information, song metadata, and a popularity score. Spotify's popularity score ranges from 0 (least popular) to 100 (most popular), and is determined as a function of number of plays on Spotify and the recency of those plays.
