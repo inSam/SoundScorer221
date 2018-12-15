@@ -2,9 +2,11 @@
 
 ## baseline.ipynb
 
-The bulk of our code is located in this jupyter notebook file. In this notebook, we perform data exploration on our dataset of songs, synthesize all the features we extract, and train our Logistic Regression, SVR, Random Forest, and Gradient Boosting models. We also perform further error analysis and prediction analysis on our models.
+The bulk of our code is located in this jupyter notebook file. In this notebook, we perform data exploration on our dataset of songs, synthesize all the features we extract, and train our Logistic Regression, SVR, Random Forest, and Gradient Boosting models.
 
 Further documentation for each section can be found within the notebook.
+
+Some error analysis, which alters the dataset we work with, is located within the `error-analysis` branch of our Github repository. This repository is located at https://github.com/inSam/SoundScorer221.
 
 ## RandomForest/
 
